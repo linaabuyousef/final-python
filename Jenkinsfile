@@ -5,11 +5,9 @@ pipeline {
         registryCredential = '0110'
     }
     stages {
-        stage('Build') {
-            steps{
-                script {
-                    sh 'docker build -t $registry .'
-                }
+       stage('Build') {
+            steps {
+                bat 'docker build -t %registry% .'
             }
         }
         stage('Test') {
