@@ -13,10 +13,10 @@ pipeline {
         stage('Test') {
             steps{
                 script {
-                    sh 'docker run -d --name my-test-container $registry'
-                    sh 'sleep 10'
-                    sh 'docker logs my-test-container'
-                    sh 'docker rm -f my-test-container'
+                    bat 'docker run -d --name my-test-container %registry'
+                    bat 'sleep 10'
+                    bat 'docker logs my-test-container'
+                    bat 'docker rm -f my-test-container'
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
-                        sh 'docker push $registry'
+                        bat 'docker push %registry'
                     }
                 }
             }
