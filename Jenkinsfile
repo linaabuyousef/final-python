@@ -30,8 +30,8 @@ pipeline {
         stage('Pushing image') {
             steps{
                 script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
+                     docker.withRegistry( '', registryCredential ) {
+                     dockerImage.push("${BUILD_NUMBER}")
                     }
                 }
             }
