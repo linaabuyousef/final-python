@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'docker'
+        label any
     }
     environment {
         registry = "linaabuyousef/devopsfinal"
