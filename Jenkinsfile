@@ -1,39 +1,36 @@
 pipeline {
-    agent any
+    agent {
+        label any
+    }
     environment {
         registry = "linaabuyousef/devopsfinal"
         registryCredential = '0110'
-        PATH = "/usr/bin/docker:$PATH"
     }
     stages {
-        stage('Cloning Git') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/linaabuyousef/final-python.git'
             }
         }
-        stage('Building image') {
+        stage('Build') {
             steps{
-                script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                }
+                sh "docker build -t ${registry}:${env.BUILD_NUMBER} ."
             }
         }
-        stage('Testing image') {
+        stage('Test the Container') {
             steps{
-                script {
-                    def app = docker.run("-p 5000:5000 ${registry}:${BUILD_NUMBER}")
-                    sh 'sleep 10' 
-                    sh 'curl localhost:5000/api/doc'
-                    app.stop() 
-                }
+                sh "docker run -itd --name devopsfinal -p 5000:5000 ${registry}:${env.BUILD_NUMBER}"
+                sleep 10
+                sh 'curl localhost:5000/api/doc'
+                sh "docker stop devopsfinal"
+                sh "docker rm devopsfinal"
             }
         }
-        stage('Pushing image') {
+        stage('Push to Docker Hub') {
             steps{
-                script {
-                     docker.withRegistry( '', registryCredential ) {
-                     dockerImage.push("${BUILD_NUMBER}")
-                    }
+                withCredentials([usernamePassword(credentialsId: registryCredential, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh "docker login -u $DOCKER_USER -p $DOCKER_PASS"
+                    sh "docker push ${registry}:${env.BUILD_NUMBER}"
                 }
             }
         }
