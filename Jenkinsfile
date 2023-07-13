@@ -3,6 +3,7 @@ pipeline {
     environment {
         registry = "linaabuyousef/devopsfinal"
         registryCredential = '0110'
+        PATH = "/usr/bin/docker:$PATH"
     }
     stages {
         stage('Cloning Git') {
