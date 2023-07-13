@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label any
-    }
+    label any
     environment {
         registry = "linaabuyousef/devopsfinal"
         registryCredential = '0110'
