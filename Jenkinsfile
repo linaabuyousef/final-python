@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         registry = "linaabuyousef/devopsfinal"
-        registryCredential = 'dockerHubCredentials' // Replace with your Docker Hub credentials ID
+        registryCredential = '0110'
         dockerImage = ''
     }
 
